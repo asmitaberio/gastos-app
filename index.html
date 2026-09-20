@@ -25,28 +25,33 @@
   --danger: #e34948;
   --danger-bg: rgba(227,73,72,0.12);
   --warning: #eda100;
-  --safe: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; font-size: 16px; overscroll-behavior: none; }
+html { height: 100%; scroll-padding-top: var(--safe-top); }
+body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; font-size: 16px; overscroll-behavior: none; }
 
-/* Layout */
-.app { display: flex; flex-direction: column; height: 100dvh; }
-.header { padding: 56px 20px 16px; background: var(--bg); border-bottom: 0.5px solid var(--border); }
-.header-row { display: flex; justify-content: space-between; align-items: flex-end; }
-.header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
-.header .month-badge { font-size: 13px; color: var(--muted); background: var(--surface2); padding: 4px 10px; border-radius: 20px; }
-.content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 0 calc(80px + var(--safe)); }
-.nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--surface); border-top: 0.5px solid var(--border); padding-bottom: var(--safe); z-index: 100; }
-.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 0; font-size: 11px; color: var(--muted); border: none; background: none; cursor: pointer; transition: color 0.15s; }
+.app { display: flex; flex-direction: column; height: 100%; }
+.header { padding: calc(20px + var(--safe-top)) 20px 16px; background: var(--bg); border-bottom: 0.5px solid var(--border); flex-shrink: 0; }
+.header-row { display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+.month-nav { display: flex; align-items: center; gap: 8px; }
+.month-nav-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--surface2); border: none; color: var(--text); font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.month-nav-btn:active { background: var(--border2); }
+.month-badge { font-size: 13px; color: var(--muted); background: var(--surface2); padding: 5px 12px; border-radius: 20px; min-width: 108px; text-align: center; }
+.month-badge.current { color: var(--accent); }
+.content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 0 calc(80px + var(--safe-bottom)); }
+.nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--surface); border-top: 0.5px solid var(--border); padding-bottom: var(--safe-bottom); z-index: 100; }
+.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 0; font-size: 11px; color: var(--muted); border: none; background: none; cursor: pointer; }
 .nav-btn.active { color: var(--accent); }
 .nav-btn svg { width: 22px; height: 22px; stroke-width: 1.7; }
 
-/* Sections */
 .section { padding: 20px; border-bottom: 0.5px solid var(--border); }
 .section-title { font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.section-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.section-title-row .section-title { margin-bottom: 0; }
 
-/* Metrics */
 .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .metric { background: var(--surface); border-radius: 14px; padding: 14px; }
 .metric .val { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
@@ -58,7 +63,6 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .metric.danger-m { background: var(--danger-bg); }
 .metric.danger-m .val { color: var(--danger); }
 
-/* Form */
 .form-group { margin-bottom: 12px; }
 .form-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: block; }
 input[type=text], input[type=number], select {
@@ -67,35 +71,33 @@ input[type=text], input[type=number], select {
 }
 input:focus, select:focus { border-color: var(--accent); }
 select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888780' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
-.btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: opacity 0.15s, transform 0.1s; }
-.btn:active { transform: scale(0.98); opacity: 0.85; }
+.btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; }
+.btn:active { opacity: 0.85; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-ghost { background: var(--surface2); color: var(--text); margin-top: 8px; }
+.btn-sm { width: auto; padding: 7px 14px; font-size: 13px; border-radius: 8px; background: var(--surface2); color: var(--accent); font-weight: 600; }
 .error { font-size: 13px; color: var(--danger); margin-top: 6px; display: none; }
+.info-box { font-size: 13px; color: var(--muted); background: var(--surface); border-radius: 12px; padding: 12px 14px; line-height: 1.5; margin-bottom: 12px; }
 
-/* Cat grid */
 .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-.cat-pill { background: var(--surface); border: 0.5px solid var(--border2); border-radius: 10px; padding: 10px 6px; text-align: center; font-size: 12px; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.cat-pill { background: var(--surface); border: 0.5px solid var(--border2); border-radius: 10px; padding: 10px 6px; text-align: center; font-size: 12px; color: var(--muted); cursor: pointer; }
 .cat-pill.selected { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .cat-pill .emoji { font-size: 18px; display: block; margin-bottom: 3px; }
 
-/* Expense list */
 .expense-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 0.5px solid var(--border); }
 .expense-left .desc { font-size: 15px; font-weight: 500; }
 .expense-left .meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .expense-right { display: flex; align-items: center; gap: 10px; }
 .expense-amount { font-size: 15px; font-weight: 600; }
-.del-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--surface2); border: none; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.del-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--surface2); border: none; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
 .del-btn:active { background: var(--danger-bg); color: var(--danger); }
 .empty { text-align: center; padding: 48px 20px; color: var(--muted); font-size: 14px; }
 .empty .icon { font-size: 36px; margin-bottom: 8px; }
 
-/* Progress */
 .prog-track { height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; margin: 8px 0 4px; }
 .prog-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width 0.5s ease; }
 .prog-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
 
-/* Cat bar */
 .cat-bar-item { margin-bottom: 12px; }
 .cat-bar-top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
 .cat-bar-name { color: var(--text); }
@@ -103,15 +105,10 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .cat-bar-track { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
 .cat-bar-fill { height: 100%; border-radius: 3px; }
 
-/* Settings */
-.settings-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 0.5px solid var(--border); }
-.settings-label { font-size: 15px; }
-.settings-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.settings-val { font-size: 15px; font-weight: 600; color: var(--accent); }
-
-/* Tabs within page */
 .page { display: none; }
 .page.active { display: block; }
+.toast { position: fixed; bottom: calc(90px + var(--safe-bottom)); left: 20px; right: 20px; background: var(--success); color: #06231a; padding: 12px 16px; border-radius: 12px; font-size: 14px; font-weight: 600; text-align: center; z-index: 200; opacity: 0; transform: translateY(10px); transition: all 0.25s ease; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -119,7 +116,11 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
   <div class="header">
     <div class="header-row">
       <h1 id="header-title">Gastos</h1>
-      <span class="month-badge" id="month-badge"></span>
+      <div class="month-nav" id="month-nav">
+        <button class="month-nav-btn" onclick="changeMonth(-1)" aria-label="Mes anterior">‹</button>
+        <span class="month-badge" id="month-badge"></span>
+        <button class="month-nav-btn" onclick="changeMonth(1)" aria-label="Mes siguiente">›</button>
+      </div>
     </div>
   </div>
 
@@ -142,8 +143,10 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
           <input type="number" id="amount" placeholder="0" inputmode="numeric" />
         </div>
         <div id="form-error" class="error">Completá todos los campos.</div>
-        <button class="btn btn-primary" onclick="addExpense()">Agregar</button>
+        <button class="btn btn-primary" onclick="addExpense()">Agregar al mes actual</button>
       </div>
+
+      <div id="import-section"></div>
 
       <div id="expense-list"></div>
     </div>
@@ -151,7 +154,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     <!-- PAGE: RESUMEN -->
     <div class="page" id="page-resumen">
       <div class="section">
-        <div class="section-title">Este mes</div>
+        <div class="section-title">Resumen del mes</div>
         <div class="metrics" id="summary-metrics"></div>
       </div>
       <div class="section">
@@ -190,7 +193,6 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 
   </div>
 
-  <!-- NAV -->
   <nav class="nav">
     <button class="nav-btn active" id="nav-gastos" onclick="goTo('gastos')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -205,6 +207,8 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       Ahorro
     </button>
   </nav>
+
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
@@ -222,13 +226,110 @@ const CATS = [
 ];
 
 const KEY = 'gastos_pwa_v2';
-let state = { expenses: [], config: { sueldo: 4274919, usd: 0, tc: 1545 } };
+let state = { expenses: [], config: { sueldo: 4274919, usd: 0, tc: 1545 }, importedBatches: [] };
 let selectedCat = CATS[0].id;
+let viewDate = new Date(); // month currently being viewed — independent from "today"
+
+const BANK_IMPORT_ID = 'santander_2026-08';
+const BANK_IMPORT_EXPENSES = [
+{"desc":"Dulce hora belgrano","amount":6000.0,"cat":"comida","month":"2026-07","date":"2026-07-24T12:00:00.000Z"},
+{"desc":"Merpago*carrefour","amount":20888.9,"cat":"comida","month":"2026-07","date":"2026-07-24T12:00:00.000Z"},
+{"desc":"Dlocal*spotify","amount":8303.49,"cat":"entret.","month":"2026-07","date":"2026-07-24T12:00:00.000Z"},
+{"desc":"Merpago*camilacomidasc","amount":13000.0,"cat":"comida","month":"2026-07","date":"2026-07-24T12:00:00.000Z"},
+{"desc":"Merpago*mococo","amount":15000.0,"cat":"comida","month":"2026-07","date":"2026-07-24T12:00:00.000Z"},
+{"desc":"Merpago*mococo","amount":16000.0,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"La aldea medialunas","amount":9400.0,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":6504.0,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"Mundo economico","amount":12500.0,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"Merpago*ciaocacao","amount":35000.0,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":17259.0,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"Farmacity14","amount":25628.5,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"Puerto dulce-puerto dulc","amount":51000.0,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"La esquina de la media l","amount":10800.0,"cat":"comida","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"Merpago*pluspetba","amount":69768.0,"cat":"otro","month":"2026-07","date":"2026-07-27T12:00:00.000Z"},
+{"desc":"La dietetica","amount":3900.0,"cat":"comida","month":"2026-07","date":"2026-07-28T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":1703.0,"cat":"comida","month":"2026-07","date":"2026-07-29T12:00:00.000Z"},
+{"desc":"Southex","amount":13037.0,"cat":"comida","month":"2026-07","date":"2026-07-29T12:00:00.000Z"},
+{"desc":"Edenor","amount":251097.1,"cat":"servicios","month":"2026-07","date":"2026-07-29T12:00:00.000Z"},
+{"desc":"Kumo asian backery-kumo","amount":9000.0,"cat":"comida","month":"2026-07","date":"2026-07-30T12:00:00.000Z"},
+{"desc":"Emova subte","amount":3242.0,"cat":"transporte","month":"2026-07","date":"2026-07-30T12:00:00.000Z"},
+{"desc":"Sube viajes - buses","amount":1604.47,"cat":"transporte","month":"2026-07","date":"2026-07-30T12:00:00.000Z"},
+{"desc":"165-moov moov cabildo","amount":109999.0,"cat":"transporte","month":"2026-07","date":"2026-07-30T12:00:00.000Z"},
+{"desc":"Merpago*mostaza","amount":20000.0,"cat":"comida","month":"2026-07","date":"2026-07-31T12:00:00.000Z"},
+{"desc":"Farmacity14","amount":10542.75,"cat":"comida","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"Merpago*thefunshop","amount":28900.0,"cat":"otro","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"Altitude trampoline park","amount":27000.0,"cat":"entret.","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"Merpago*casachina","amount":41125.0,"cat":"comida","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"La dietetica","amount":10900.0,"cat":"comida","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"Merpago*elhogardelpan","amount":23800.0,"cat":"comida","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"Merpago*kiosco365","amount":4000.0,"cat":"comida","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"Merpago*casachina","amount":4000.0,"cat":"comida","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"Merpago*camilacomidasc","amount":11000.0,"cat":"comida","month":"2026-08","date":"2026-08-03T12:00:00.000Z"},
+{"desc":"Churros el topo","amount":7200.0,"cat":"comida","month":"2026-08","date":"2026-08-04T12:00:00.000Z"},
+{"desc":"Macana cafe","amount":24000.0,"cat":"comida","month":"2026-08","date":"2026-08-05T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":26266.23,"cat":"comida","month":"2026-08","date":"2026-08-05T12:00:00.000Z"},
+{"desc":"Keka tortas","amount":5000.0,"cat":"comida","month":"2026-08","date":"2026-08-06T12:00:00.000Z"},
+{"desc":"20214524628","amount":5000.0,"cat":"comida","month":"2026-08","date":"2026-08-06T12:00:00.000Z"},
+{"desc":"Merpago*hagov","amount":1000.0,"cat":"otro","month":"2026-08","date":"2026-08-06T12:00:00.000Z"},
+{"desc":"Emova subte","amount":3368.0,"cat":"transporte","month":"2026-08","date":"2026-08-06T12:00:00.000Z"},
+{"desc":"Sube viajes - buses","amount":1604.47,"cat":"transporte","month":"2026-08","date":"2026-08-06T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":16551.92,"cat":"comida","month":"2026-08","date":"2026-08-07T12:00:00.000Z"},
+{"desc":"Merpago*federicosimon","amount":7000.0,"cat":"comida","month":"2026-08","date":"2026-08-07T12:00:00.000Z"},
+{"desc":"Merpago*camilacomidasc","amount":12500.0,"cat":"comida","month":"2026-08","date":"2026-08-07T12:00:00.000Z"},
+{"desc":"La esquina de la media l","amount":15700.0,"cat":"comida","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Pvs*super echeverria n316","amount":19200.0,"cat":"comida","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Edenor","amount":151630.35,"cat":"servicios","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Merpago*kiosco365","amount":7100.0,"cat":"comida","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Merpago*bistrotokio","amount":144900.0,"cat":"comida","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Fotografca sa","amount":12000.0,"cat":"otro","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Merpago*sanitariosmald","amount":19000.0,"cat":"comida","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Merpago*sanitariosmald","amount":7000.0,"cat":"comida","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Merpago*camilacomidasc","amount":13500.0,"cat":"comida","month":"2026-08","date":"2026-08-10T12:00:00.000Z"},
+{"desc":"Merpago*granjarte","amount":9200.0,"cat":"comida","month":"2026-08","date":"2026-08-11T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":24621.8,"cat":"comida","month":"2026-08","date":"2026-08-11T12:00:00.000Z"},
+{"desc":"Sube viajes - buses","amount":1002.8,"cat":"transporte","month":"2026-08","date":"2026-08-11T12:00:00.000Z"},
+{"desc":"Tuenti recargas dcp","amount":14000.0,"cat":"comida","month":"2026-08","date":"2026-08-11T12:00:00.000Z"},
+{"desc":"Starbucks honduras","amount":14000.0,"cat":"comida","month":"2026-08","date":"2026-08-12T12:00:00.000Z"},
+{"desc":"Merpago*open25","amount":1500.0,"cat":"comida","month":"2026-08","date":"2026-08-12T12:00:00.000Z"},
+{"desc":"Merpago*mercadoferret","amount":14500.0,"cat":"comida","month":"2026-08","date":"2026-08-12T12:00:00.000Z"},
+{"desc":"Merpago*camilacomidasc","amount":25000.0,"cat":"comida","month":"2026-08","date":"2026-08-12T12:00:00.000Z"},
+{"desc":"Dia tienda 934","amount":28081.1,"cat":"comida","month":"2026-08","date":"2026-08-13T12:00:00.000Z"},
+{"desc":"20214524628","amount":6700.0,"cat":"comida","month":"2026-08","date":"2026-08-13T12:00:00.000Z"},
+{"desc":"Emova subte","amount":3368.0,"cat":"transporte","month":"2026-08","date":"2026-08-13T12:00:00.000Z"},
+{"desc":"Farmacity14","amount":51633.15,"cat":"comida","month":"2026-08","date":"2026-08-13T12:00:00.000Z"},
+{"desc":"Pitbull suplementos-tien","amount":57930.47,"cat":"comida","month":"2026-08","date":"2026-08-13T12:00:00.000Z"},
+{"desc":"Hiper rodo","amount":42000.0,"cat":"comida","month":"2026-08","date":"2026-08-14T12:00:00.000Z"},
+{"desc":"Merpago*indoorbelgrano","amount":10000.0,"cat":"comida","month":"2026-08","date":"2026-08-14T12:00:00.000Z"},
+{"desc":"Pedidosya*tea connectio","amount":26629.0,"cat":"comida","month":"2026-08","date":"2026-08-14T12:00:00.000Z"},
+{"desc":"Pedidosya*propina","amount":1050.0,"cat":"comida","month":"2026-08","date":"2026-08-14T12:00:00.000Z"},
+{"desc":"Merpago*playlandpark","amount":20000.0,"cat":"entret.","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":7140.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Merpago*achicoria","amount":26000.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":6483.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Merpago*farmacity","amount":29990.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Showcase belgrano","amount":17700.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Pvs*super echeverria n316","amount":9500.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Market belgrano","amount":6779.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Merpago*casachina","amount":6700.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Bab sa tr","amount":10576.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Merpago*b40belgrano","amount":7000.0,"cat":"comida","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Metrogas","amount":44690.19,"cat":"servicios","month":"2026-08","date":"2026-08-18T12:00:00.000Z"},
+{"desc":"Librerias levalle","amount":3400.0,"cat":"otro","month":"2026-08","date":"2026-08-19T12:00:00.000Z"},
+{"desc":"Merpago*ladieteticnya","amount":4000.0,"cat":"comida","month":"2026-08","date":"2026-08-19T12:00:00.000Z"},
+{"desc":"Southex","amount":13037.0,"cat":"comida","month":"2026-08","date":"2026-08-19T12:00:00.000Z"},
+{"desc":"Sbux cabildo","amount":8300.0,"cat":"comida","month":"2026-08","date":"2026-08-20T12:00:00.000Z"},
+{"desc":"Emova subte","amount":3368.0,"cat":"transporte","month":"2026-08","date":"2026-08-20T12:00:00.000Z"},
+{"desc":"Sube viajes - buses","amount":1604.47,"cat":"transporte","month":"2026-08","date":"2026-08-20T12:00:00.000Z"}
+];
 
 function load() {
   try {
     const s = localStorage.getItem(KEY);
-    if (s) state = JSON.parse(s);
+    if (s) {
+      const parsed = JSON.parse(s);
+      state = Object.assign({ expenses: [], config: { sueldo: 4274919, usd: 0, tc: 1545 }, importedBatches: [] }, parsed);
+      if (!state.importedBatches) state.importedBatches = [];
+    }
   } catch(e) {}
 }
 
@@ -236,17 +337,37 @@ function save() {
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
 }
 
-function getMonthKey() {
-  const d = new Date();
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function getMonthKey(d) {
+  d = d || viewDate;
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
 }
 
-function getMonthLabel() {
-  return new Date().toLocaleDateString('es-AR', {month:'long', year:'numeric'});
+function getMonthLabel(d) {
+  d = d || viewDate;
+  const label = d.toLocaleDateString('es-AR', {month:'long', year:'numeric'});
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
+function isCurrentRealMonth() {
+  const now = new Date();
+  return getMonthKey(viewDate) === getMonthKey(now);
+}
+
+function changeMonth(delta) {
+  viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + delta, 1);
+  renderAll();
 }
 
 function monthExpenses() {
-  return (state.expenses || []).filter(e => e.month === getMonthKey());
+  const mk = getMonthKey();
+  return (state.expenses || []).filter(e => e.month === mk);
 }
 
 function fmtARS(n) {
@@ -277,11 +398,14 @@ function addExpense() {
   const errEl = document.getElementById('form-error');
   if (!desc || !amount || amount <= 0) { errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
-  state.expenses.push({ id: Date.now(), desc, amount, cat: selectedCat, month: getMonthKey(), date: new Date().toISOString() });
+  // new expenses always go to the month currently being viewed
+  const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), Math.min(new Date().getDate(), 28), 12);
+  state.expenses.push({ id: Date.now(), desc, amount, cat: selectedCat, month: getMonthKey(), date: d.toISOString() });
   save();
   document.getElementById('desc').value = '';
   document.getElementById('amount').value = '';
   renderExpenseList();
+  showToast('Gasto agregado a ' + getMonthLabel());
 }
 
 function deleteExpense(id) {
@@ -295,7 +419,7 @@ function renderExpenseList() {
   const exps = monthExpenses().slice().reverse();
   const el = document.getElementById('expense-list');
   if (!exps.length) {
-    el.innerHTML = '<div class="empty"><div class="icon">📭</div>Sin gastos este mes</div>';
+    el.innerHTML = '<div class="empty"><div class="icon">📭</div>Sin gastos en ' + getMonthLabel().toLowerCase() + '</div>';
     return;
   }
   el.innerHTML = exps.map(e => {
@@ -312,6 +436,32 @@ function renderExpenseList() {
       </div>
     </div>`;
   }).join('');
+}
+
+function renderImportSection() {
+  const el = document.getElementById('import-section');
+  const already = state.importedBatches.includes(BANK_IMPORT_ID);
+  if (already) { el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <div class="section" style="padding-top:0;">
+      <div class="info-box">
+        📄 Tenés un extracto de Santander (24/07 al 20/08) sin importar — ${BANK_IMPORT_EXPENSES.length} movimientos.
+      </div>
+      <button class="btn btn-ghost" style="margin-top:0;" onclick="importBankStatement()">Importar movimientos del banco</button>
+    </div>
+  `;
+}
+
+function importBankStatement() {
+  if (state.importedBatches.includes(BANK_IMPORT_ID)) return;
+  const toAdd = BANK_IMPORT_EXPENSES.map((e, i) => ({ ...e, id: Date.now() + i }));
+  state.expenses = state.expenses.concat(toAdd);
+  state.importedBatches.push(BANK_IMPORT_ID);
+  save();
+  renderImportSection();
+  renderExpenseList();
+  renderResumen();
+  showToast(toAdd.length + ' movimientos importados');
 }
 
 function renderResumen() {
@@ -345,7 +495,7 @@ function renderResumen() {
   exps.forEach(e => { catTotals[e.cat] = (catTotals[e.cat] || 0) + e.amount; });
   const cats = Object.entries(catTotals).sort((a,b) => b[1]-a[1]);
   const barsEl = document.getElementById('cat-bars');
-  if (!cats.length) { barsEl.innerHTML = '<div class="empty"><div class="icon">📊</div>Sin datos aún</div>'; return; }
+  if (!cats.length) { barsEl.innerHTML = '<div class="empty"><div class="icon">📊</div>Sin datos en ' + getMonthLabel().toLowerCase() + '</div>'; return; }
   barsEl.innerHTML = cats.map(([catId, amt]) => {
     const cat = CATS.find(c => c.id === catId) || CATS[CATS.length-1];
     const pct = total > 0 ? Math.round(amt/total*100) : 0;
@@ -416,6 +566,7 @@ function saveConfig() {
   save();
   renderAhorro();
   renderResumen();
+  showToast('Configuración guardada');
 }
 
 function goTo(page) {
@@ -425,16 +576,28 @@ function goTo(page) {
   document.getElementById('nav-' + page).classList.add('active');
   const titles = { gastos: 'Gastos', resumen: 'Resumen', ahorro: 'Ahorro' };
   document.getElementById('header-title').textContent = titles[page];
-  if (page === 'resumen') renderResumen();
-  if (page === 'ahorro') renderAhorro();
+  document.getElementById('month-nav').style.display = page === 'ahorro' ? 'none' : 'flex';
+  renderAll();
+}
+
+function renderMonthBadge() {
+  const badge = document.getElementById('month-badge');
+  badge.textContent = getMonthLabel();
+  badge.classList.toggle('current', isCurrentRealMonth());
+}
+
+function renderAll() {
+  renderMonthBadge();
+  const activePage = document.querySelector('.page.active').id.replace('page-', '');
+  if (activePage === 'gastos') { renderImportSection(); renderExpenseList(); }
+  if (activePage === 'resumen') renderResumen();
+  if (activePage === 'ahorro') renderAhorro();
 }
 
 function init() {
   load();
-  document.getElementById('month-badge').textContent = getMonthLabel();
   initCatGrid();
-  renderExpenseList();
-  renderAhorro();
+  renderAll();
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
